@@ -1,0 +1,32 @@
+<!-- Détail d'une vidéo + modification / suppression -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ video.title }}</title>
+</head>
+<body>
+    <h1>{{ video.title }}</h1>
+    <p>{{ video.description }}</p>
+    <p>Vues : {{ video.views }}</p>
+
+    <h3>Modifier la vidéo</h3>
+    <form method="POST" action="{{ url_for('video_detail', id=video.id) }}">
+        <input type="hidden" name="_method" value="PUT">
+        <label>Titre :</label>
+        <input type="text" name="title" value="{{ video.title }}"><br>
+        <label>Description :</label>
+        <textarea name="description">{{ video.description }}</textarea><br>
+        <button type="submit">Modifier</button>
+    </form>
+
+    <h3>Supprimer la vidéo</h3>
+    <form method="POST" action="{{ url_for('video_detail', id=video.id) }}">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit">Supprimer</button>
+    </form>
+
+    <a href="{{ url_for('list_videos') }}">Retour à la liste</a><br>
+    <a href="{{ url_for('home') }}">Retour à l'accueil</a>
+</body>
+</html>

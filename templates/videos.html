@@ -1,0 +1,21 @@
+<!-- Liste de toutes les vidéos -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Liste des vidéos</title>
+</head>
+<body>
+    <h1>Liste des vidéos</h1>
+    <ul>
+        {% for video in videos %}
+            <li>
+                <a href="{{ url_for('video_detail', id=video.id) }}">{{ video.title }}</a>
+                ({{ video.views }} vues)
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ url_for('add_video') }}">Ajouter une nouvelle vidéo</a><br>
+    <a href="{{ url_for('home') }}">Retour à l'accueil</a>
+</body>
+</html>

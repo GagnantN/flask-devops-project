@@ -1,0 +1,17 @@
+<!-- Page d'accueil -->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Accueil</title>
+</head>
+<body>
+    <h1>Bienvenue sur le site de vidéos</h1>
+    <ul>
+        <li><a href="{{ url_for('list_videos') }}">Voir toutes les vidéos</a></li>
+        <li><a href="{{ url_for('add_video') }}">Ajouter une vidéo</a></li>
+        <li><a href="{{ url_for('search_video') }}">Rechercher une vidéo</a></li>
+    </ul>
+</body>
+</html>

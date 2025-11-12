@@ -1,0 +1,20 @@
+<!-- Formulaire pour ajouter une vidéo -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ajouter une vidéo</title>
+</head>
+<body>
+    <h1>Ajouter une nouvelle vidéo</h1>
+    <form method="POST" action="{{ url_for('add_video') }}">
+        <label>Titre :</label>
+        <input type="text" name="title" required><br>
+        <label>Description :</label>
+        <textarea name="description" required></textarea><br>
+        <button type="submit">Ajouter</button>
+    </form>
+    <a href="{{ url_for('list_videos') }}">Retour à la liste</a><br>
+    <a href="{{ url_for('home') }}">Retour à l'accueil</a>
+</body>
+</html>
