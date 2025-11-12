@@ -6,46 +6,41 @@
     <title>Détails de la vidéo</title>
     <!-- Import Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html, body { height: 100%; margin: 0; }
+        body { display: flex; flex-direction: column; }
+        main { flex: 1 0 auto; }
+        footer { text-align: center; color: #6c757d; padding: 0.5rem 0; background-color: #f8f9fa; flex-shrink: 0; }
+    </style>
 </head>
 
 <body class="bg-light">
     <div class="container py-5">
         <!-- Titre page -->
-        <h1 class="mb-4">Détails de la vidéo</h1>
-        
-        <form>
-            <!-- Titre -->
-            <div class="mb-3">
-                <label class="form-label">Titre :</label>
-                <input type="text" class="form-control" value="{{ video.title }}" readonly>
-            </div>
+        <h1 class="mb-4">{{ video.title }}</h1>
 
-            <!-- Description -->
-            <div class="mb-3">
-                <label class="form-label">Description :</label>
-                <textarea class="form-control" rows="5" readonly>{{ video.description }}</textarea>
-            </div>
+        <!-- Zone vidéo intégrée -->
+        {% if video.url %}
+        <div class="ratio ratio-16x9 mb-4">
+            <!-- Transforme l'URL YouTube en embed -->
+            {% set video_id = video.url.split('v=')[-1] %}
+            <iframe src="https://www.youtube.com/embed/{{ video_id }}" 
+                    title="{{ video.title }}" allowfullscreen></iframe>
+        </div>
+        {% endif %}
 
-            <!-- Url -->
-            <div class="mb-3">
-                <label class="form-label">URL :</label>
-                <input type="text" class="form-control" value="{{ video.url }}" readonly>
-            </div>
-
-            <!-- Thème -->
-            <div class="mb-3">
-                <label class="form-label">Thème :</label>
-                <input type="text" class="form-control" value="{{ video.theme }}" readonly>
-            </div>
-        </form>
+        <!-- Détails de la vidéo -->
+        <div class="mb-3">
+            <label class="form-label"><strong>Description :</strong></label>
+            <p>{{ video.description }}</p>
+        </div>
+        <div class="mb-3">
+            <label class="form-label"><strong>Thème :</strong></label>
+            <p>{{ video.theme }}</p>
+        </div>
 
         <!-- Boutons actions -->
         <div class="d-flex gap-2 flex-wrap">
-
-            <!-- Voir la vidéo -->
-            {% if video.url %}
-                <a href="{{ video.url }}" target="_blank" class="btn btn-primary">Voir la vidéo</a>
-            {% endif %}
 
             <!-- Modifier -->
             <a href="{{ url_for('edit_video', id=video.id) }}" class="btn btn-warning">Modifier</a>
@@ -58,7 +53,6 @@
             <!-- Retour -->
             <a href="{{ url_for('list_videos') }}" class="btn btn-secondary">Retour</a>
         </div>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
