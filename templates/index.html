@@ -5,13 +5,17 @@
 <html>
 <head>
     <title>Accueil</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Bienvenue sur le site de vidéos</h1>
-    <ul>
-        <li><a href="{{ url_for('list_videos') }}">Voir toutes les vidéos</a></li>
-        <li><a href="{{ url_for('add_video') }}">Ajouter une vidéo</a></li>
-        <li><a href="{{ url_for('search_video') }}">Rechercher une vidéo</a></li>
-    </ul>
+<body class="bg-light">
+    <div class="container py-5">
+        <h1 class="mb-4">Bienvenue sur le site de vidéos</h1>
+        <div class="list-group">
+            <a href="{{ url_for('list_videos') }}" class="list-group-item list-group-item-action">Voir toutes les vidéos</a>
+            <a href="{{ url_for('add_video') }}" class="list-group-item list-group-item-action">Ajouter une vidéo</a>
+            <a href="{{ url_for('search_video') }}" class="list-group-item list-group-item-action">Rechercher une vidéo</a>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
