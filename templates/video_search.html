@@ -9,37 +9,53 @@
 </head>
 
 <body class="bg-light">
-    <div class="container py-5">
-        <!-- Titre page -->
-        <h1 class="mb-4">Rechercher une vidéo</h1>
-
-        <!-- Barre de recherche -->
-        <form method="POST" action="{{ url_for('search_video') }}" class="mb-4">
-            <div class="input-group">
-                <input type="text" class="form-control" name="query" value="{{ query }}" placeholder="Titre de la vidéo">
-                <button type="submit" class="btn btn-primary">Rechercher</button>
-            </div>
-        </form>
-
-
-        <!-- Si résultat : -->
-        {% if results %}
-            <h3>Résultats :</h3>
-            <ul class="list-group mb-3">
-                {% for video in results %}
-                    <li class="list-group-item">
-                        <a href="{{ url_for('video_detail', id=video.id) }}">{{ video.title }}</a> 
-                    </li>
-                {% endfor %}
-            </ul>
-
-        <!-- Message d'erreur -->
-        {% elif query %}
-            <p>Aucune vidéo trouvée pour "{{ query }}"</p>
-        {% endif %}
-
-        <a href="{{ url_for('list_videos') }}" class="btn btn-secondary me-2">Retour à la liste</a>
-        <a href="{{ url_for('home') }}" class="btn btn-secondary">Accueil</a>
+    <!-- Titre et bouton retour -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Résultats de recherche</h1>
+        <a href="{{ url_for('list_videos') }}" class="btn btn-secondary">Retour à la liste</a>
     </div>
+
+    <!-- Barre de recherche -->
+    <form method="POST" action="{{ url_for('search_video') }}" class="mb-4">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Rechercher par titre..." name="query" value="{{ query }}">
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+        </div>
+    </form>
+
+    <!-- Affichage des résultats -->
+    {% if results %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for video in results %}
+        <div class="col">
+            <div class="card h-100 shadow-sm d-flex flex-column">
+                {% if video.url %}
+                    {% set video_id = video.url.split('v=')[-1] %}
+                    <img src="https://img.youtube.com/vi/{{ video_id }}/hqdefault.jpg" class="card-img-top" alt="{{ video.title }}">
+                {% else %}
+                    <img src="https://via.placeholder.com/480x270?text=Pas+d'image" class="card-img-top" alt="{{ video.title }}">
+                {% endif %}
+
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ video.title }}</h5>
+                    <p class="card-text">{{ video.description[:100] }}{% if video.description|length > 100 %}...{% endif %}</p>
+
+                    <div class="mt-auto d-flex gap-2">
+                        <div class="d-flex gap-2">
+                            <a href="{{ url_for('video_detail', id=video.id) }}" class="btn btn-primary btn-sm">Voir</a>
+                            <a href="{{ url_for('edit_video', id=video.id) }}" class="btn btn-warning btn-sm">Modifier</a>
+                        </div>
+                        <form method="POST" action="{{ url_for('delete_video', id=video.id) }}" class="ms-auto">
+                            <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <p>Aucune vidéo trouvée pour "<strong>{{ query }}</strong>".</p>
+    {% endif %}
 </body>
 </html>
