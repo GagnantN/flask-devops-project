@@ -7,19 +7,17 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-    <div class="container py-5">
-        <h1 class="mb-4">Liste des vidéos</h1>
-        <div class="list-group mb-3">
-            {% for video in videos %}
-                <a href="{{ url_for('video_detail', id=video.id) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                    {{ video.title }}
-                    <span class="badge bg-primary rounded-pill">{{ video.views }} vues</span>
-                </a>
-            {% endfor %}
-        </div>
-        <a href="{{ url_for('add_video') }}" class="btn btn-success me-2">Ajouter une vidéo</a>
-        <a href="{{ url_for('home') }}" class="btn btn-secondary">Accueil</a>
+<div class="container py-5">
+    <h1 class="mb-4">Liste des vidéos</h1>
+    <div class="list-group mb-3">
+        {% for video in videos %}
+            <a href="{{ url_for('video_detail', id=video.id) }}" class="list-group-item list-group-item-action">
+                {{ video.title }}
+            </a>
+        {% endfor %}
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <a href="{{ url_for('add_video') }}" class="btn btn-success me-2">Ajouter une vidéo</a>
+    <a href="{{ url_for('home') }}" class="btn btn-secondary">Accueil</a>
+</div>
 </body>
 </html>

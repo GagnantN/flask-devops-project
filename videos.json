@@ -1,20 +1,23 @@
 [
     {
-        "id" : 1,
+        "id": 1,
         "url": "https://www.youtube.com/watch?v=t3P5_a9nstk",
         "title": "Chateau for Sale - Chateau de Falloux en Haut Anjou",
-        "theme": "chateau"
+        "theme": "chateau",
+        "description": "Une vidéo de 3 minutes qui montre en détail le château de Falloux"
     },
     {
-        "id" : 2,
+        "id": 2,
         "url": "https://www.youtube.com/watch?v=9vcLqFdBz_0",
         "title": "Edouard Guyot, une vie de château - Terres de France",
-        "theme": "chateau"
+        "theme": "chateaux",
+        "description": "Une vidéo qui montre Edouard Guyot, qui a acheté un château à 22 ans."
     },
     {
-        "id" : 3,
-        "url": "x",
-        "title": "x",
-        "theme": "x"
+        "id": 3,
+        "title": "Les secrets des châteaux de la Loire",
+        "description": "Un reportage sur les châteaux de la Loire.",
+        "url": "https://www.youtube.com/watch?v=b-OhIJeF1xE",
+        "theme": "chateaux"
     }
 ]

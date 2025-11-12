@@ -4,7 +4,6 @@ from flask import Flask, render_template, request, redirect, url_for, abort
 app = Flask(__name__)
 VIDEO_FILE = "videos.json"
 
-# --- Fonctions pour lire et écrire les vidéos ---
 def load_videos():
     try:
         with open(VIDEO_FILE, "r", encoding="utf-8") as f:
@@ -16,58 +15,72 @@ def save_videos(videos):
     with open(VIDEO_FILE, "w", encoding="utf-8") as f:
         json.dump(videos, f, indent=4, ensure_ascii=False)
 
-# --- Charger les vidéos au démarrage ---
 videos = load_videos()
 
-# --- Route GET / : page d'accueil ---
+# --- Accueil ---
 @app.route("/")
 def home():
     return render_template("index.html")
 
-# --- Route GET /videos : afficher toutes les vidéos ---
+# --- Liste des vidéos ---
 @app.route("/videos")
 def list_videos():
     return render_template("videos.html", videos=videos)
 
-# --- Route GET/PUT/DELETE /videos/<int:id> ---
-@app.route("/videos/<int:id>", methods=["GET", "POST"])
+# --- Page détail d'une vidéo ---
+@app.route("/videos/<int:id>")
 def video_detail(id):
     video = next((v for v in videos if v["id"] == id), None)
     if not video:
-        abort(404, "Vidéo non trouvée")
-
-    if request.method == "POST":
-        method = request.form.get("_method")
-        if method == "PUT":
-            video["title"] = request.form.get("title", video["title"])
-            video["description"] = request.form.get("description", video["description"])
-            save_videos(videos)
-            return redirect(url_for("video_detail", id=id))
-        elif method == "DELETE":
-            videos.remove(video)
-            save_videos(videos)
-            return redirect(url_for("list_videos"))
-
+        abort(404)
     return render_template("videos.detail.html", video=video)
 
-# --- Route GET /videos/add : afficher formulaire ---
-# --- Route POST /videos/add : ajouter la vidéo ---
+# --- Formulaire de modification d'une vidéo ---
+@app.route("/videos/<int:id>/edit", methods=["GET", "POST"])
+def edit_video(id):
+    video = next((v for v in videos if v["id"] == id), None)
+    if not video:
+        abort(404)
+    
+    if request.method == "POST":
+        video["title"] = request.form.get("title", video["title"])
+        video["description"] = request.form.get("description", video.get("description", ""))
+        video["url"] = request.form.get("url", video.get("url", ""))
+        video["theme"] = request.form.get("theme", video.get("theme", ""))
+        save_videos(videos)
+        return redirect(url_for("video_detail", id=id))
+    
+    return render_template("video_form.html", video=video)
+
+# --- Ajouter une vidéo ---
 @app.route("/videos/add", methods=["GET", "POST"])
 def add_video():
     if request.method == "POST":
         new_id = max((v["id"] for v in videos), default=0) + 1
         new_video = {
             "id": new_id,
-            "title": request.form["title"],
-            "description": request.form["description"],
-            "views": 0
+            "title": request.form.get("title", ""),
+            "description": request.form.get("description", ""),
+            "url": request.form.get("url", ""),
+            "theme": request.form.get("theme", "")
         }
         videos.append(new_video)
         save_videos(videos)
         return redirect(url_for("list_videos"))
-    return render_template("video_form.html")
+    
+    return render_template("video_form.html", video=None)
 
-# --- Route GET /videos/search : rechercher par titre ---
+# --- Supprimer une vidéo ---
+@app.route("/videos/<int:id>/delete", methods=["POST"])
+def delete_video(id):
+    video = next((v for v in videos if v["id"] == id), None)
+    if not video:
+        abort(404)
+    videos.remove(video)
+    save_videos(videos)
+    return redirect(url_for("list_videos"))
+
+# --- Recherche ---
 @app.route("/videos/search", methods=["GET", "POST"])
 def search_video():
     results = []
@@ -77,6 +90,5 @@ def search_video():
         results = [v for v in videos if query.lower() in v["title"].lower()]
     return render_template("video_search.html", results=results, query=query)
 
-# --- Démarrage de l'application ---
 if __name__ == "__main__":
     app.run(debug=True)
